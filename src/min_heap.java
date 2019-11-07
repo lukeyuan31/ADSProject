@@ -30,6 +30,16 @@ class building{
 
 
     public class min_heap {
+            private int[] min_heap;
+            private int Max_size;
 
+            public min_heap(int max_size){
+                this.Max_size=max_size;
+                min_heap=new int[max_size+1];
+            }
+
+            public void insert(int element){
+
+            }
 
 }
