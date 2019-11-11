@@ -1,4 +1,4 @@
-class building{
+    class building{
         private int buildingNum;
         private int executed_time;
         private int total_time;
@@ -26,6 +26,153 @@ class building{
         public void setTotal_time(int total_time) {
             this.total_time = total_time;
         }
+    }
+
+    class RBTreeNode {
+            private int key;
+            private RBTreeNode leftChild;
+            private RBTreeNode rightChild;
+            private RBTreeNode parent;
+            private String color;
+
+            //Construct nil nodes
+            public RBTreeNode(){
+                this.color="black";
+                this.leftChild=null;
+                this.rightChild=null;
+                this.parent=null;
+                this.key=0;
+
+            }
+
+            public RBTreeNode(int key,RBTreeNode leftChild,RBTreeNode rightChild,RBTreeNode parent,String color){
+                this.leftChild=leftChild;
+                this.rightChild=rightChild;
+                this.parent=parent;
+                this.color=color;
+                this.key=key;
+            }
+
+        public RBTreeNode getLeftChild() {
+            return leftChild;
+        }
+
+        public RBTreeNode getParent() {
+            return parent;
+        }
+
+        public RBTreeNode getRightChild() {
+            return rightChild;
+        }
+
+        public String getColor() {
+            return color;
+        }
+
+        public int getKey(){
+            return key;
+        }
+
+        public void setColor(String color) {
+            this.color = color;
+        }
+
+        public void setLeftChild(RBTreeNode leftChild) {
+            this.leftChild = leftChild;
+        }
+
+        public void setParent(RBTreeNode parent) {
+            this.parent = parent;
+        }
+
+        public void setRightChild(RBTreeNode rightChild) {
+            this.rightChild = rightChild;
+        }
+
+        public void setKey(int key){
+                this.key=key;
+        }
+    }
+
+    class RBTree {
+            private RBTreeNode nil=new RBTreeNode();
+            private RBTreeNode root=new RBTreeNode();
+
+            public RBTree(){
+                 root=nil;
+            }
+
+            public RBTreeNode getRoot(RBTree tree){
+                return tree.root;
+            }
+
+            public void setRoot(RBTree tree,RBTreeNode node){
+                tree.root=node;
+            }
+
+            public RBTreeNode createRBTnode(int key){
+                RBTreeNode newNode=new RBTreeNode(key,nil,nil,nil,"red");
+                return newNode;
+            }
+
+            public void insertNode(RBTree tree,RBTreeNode newNode){
+                //find the correct place to insert the new node
+                RBTreeNode pointer=getRoot(tree);
+                RBTreeNode insertPointer=nil;
+                if (pointer==nil){
+                    tree.root=newNode;
+                }
+                else {
+                    while(pointer!=nil){
+                        insertPointer=pointer;
+                       if(newNode.getKey()<pointer.getKey()){
+                            pointer=pointer.getLeftChild();
+                       }
+                       else {
+                           pointer=pointer.getRightChild();
+                       }
+                    }
+                }
+                newNode.setParent(insertPointer);
+                if(newNode.getKey()<insertPointer.getKey()){
+                    insertPointer.setLeftChild(newNode);
+                }
+                else {
+                    insertPointer.setRightChild(newNode);
+                }
+                
+            }
+
+            public void traverse(RBTreeNode node){
+                 if(node!=nil){
+                     System.out.println(node.getKey());
+                     traverse(node.getLeftChild());
+                     traverse(node.getRightChild());
+                }
+            }
+
+            public static void main(String args[]){
+                 RBTree tree=new RBTree();
+                 RBTreeNode node1=tree.createRBTnode(3);
+                 RBTreeNode node2=tree.createRBTnode(1);
+                 RBTreeNode node3=tree.createRBTnode(4);
+                 RBTreeNode node4=tree.createRBTnode(2);
+                 RBTreeNode node5=tree.createRBTnode(7);
+                 RBTreeNode node6=tree.createRBTnode(8);
+                 RBTreeNode node7=tree.createRBTnode(5);
+                 tree.insertNode(tree,node1);
+                 tree.insertNode(tree,node2);
+                 tree.insertNode(tree,node3);
+                 tree.insertNode(tree,node4);
+                 tree.insertNode(tree,node5);
+                 tree.insertNode(tree,node6);
+                 tree.insertNode(tree,node7);
+                 tree.traverse(tree.root);
+        }
+
+            
+            
+
     }
 
     class min_heap {
@@ -58,23 +205,24 @@ class building{
                 }
             }
 
-            public void insert(int element){
-                if(current_size>=Max_size) {
+            public void insert(int element) {
+                if (current_size >= Max_size) {
                     System.out.println("The size exceeds the max size");
                     return;
                 }
-                min_heap[current_size]=element;
-                int pos=current_size+1;
+                min_heap[current_size] = element;
+                int pos = current_size + 1;
                 current_size++;
 
-                while(pos!=1 && element<min_heap[getParent(pos)-1]){
-                    int indexOfParent=getParent(pos)-1;
-                    int temp=min_heap[indexOfParent];
-                    min_heap[indexOfParent]=min_heap[pos-1];
-                    min_heap[pos-1]=temp;
+                while (pos != 1 && element < min_heap[getParent(pos) - 1]) {
+                    int indexOfParent = getParent(pos) - 1;
+                    int temp = min_heap[indexOfParent];
+                    min_heap[indexOfParent] = min_heap[pos - 1];
+                    min_heap[pos - 1] = temp;
                 }
                 //current_size++;
             }
+
 
             public static void main (String args[]){
                 min_heap minHeap = new min_heap(15);
@@ -94,4 +242,6 @@ class building{
         }
 
 
-}
+    }
+
+
