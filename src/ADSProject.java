@@ -155,6 +155,122 @@
                  
             }
 
+            public void deleteNode(RBTree tree, RBTreeNode node){
+                RBTreeNode temp=node;
+                String storeColor=node.getColor();
+                RBTreeNode pointer=null;
+                //if node has no left child, swap with right child
+                if(node.getLeftChild()==nil){
+                    pointer=node.getRightChild();
+                    swap_root(tree,node,node.getRightChild());
+                }
+
+                //if node has no right child, swap with left child
+                else if(node.getRightChild()==nil){
+                    pointer=node.getLeftChild();
+                    swap_root(tree,node,node.getLeftChild());
+                }
+
+                //if the node has both left child and right child
+                else {
+                    temp=tree_minimum(node.getRightChild());
+                    storeColor=temp.getColor();
+                    pointer=temp.getRightChild();
+                    if(temp.getParent()==node){
+                        pointer.setParent(temp);
+                    }
+                    else {
+                        swap_root(tree,temp,temp.getRightChild());
+                        temp.setRightChild(node.getRightChild());
+                        temp.getRightChild().setParent(pointer);
+                    }
+                    swap_root(tree,node,temp);
+                    temp.setLeftChild(node.getLeftChild());
+                    temp.getLeftChild().setParent(pointer);
+                    temp.setColor(node.getColor());
+
+                }
+                if(storeColor.equals("black")){
+                    delete_adjust(tree,pointer);
+                }
+            }
+
+            public void delete_adjust(RBTree tree, RBTreeNode node){
+                RBTreeNode temp=null;
+                //while not a root node and is black
+                while( node !=tree.root && node.getColor().equals("black")){
+                    //node is the left child of its parent
+                    if(node==node.getParent().getLeftChild()){
+                        //temp becomes brother
+                        temp=node.getParent().getRightChild();
+                        //case1: brother is red
+                        if(temp.getColor().equals("red")){
+                            temp.setColor("black");
+                            node.getParent().setColor("red");
+                            LeftRotation(tree,node.getParent());
+                            temp=node.getParent().getRightChild();
+                        }
+                        //case2: brother and both children are black
+                        if(temp.getLeftChild().getColor().equals("black") && temp.getRightChild().getColor().equals("black")){
+                            temp.setColor("red");
+                            node=node.getParent();
+                        }
+                        //case3: brother is black, left child is red, right child is black
+                        else if (temp.getRightChild().getColor().equals("black")){
+                            temp.getLeftChild().setColor("black");
+
+                            temp.setColor("red");
+
+                            RightRotation(tree,temp);
+
+                            temp=node.getParent().getRightChild();
+                        }
+                        //case4: brother is black, right child is red
+                        else if (temp.getRightChild().getColor().equals("red")){
+                            temp.setColor(node.getParent().getColor());
+                            node.getParent().setColor("black");
+                            temp.getRightChild().setColor("black");
+                            LeftRotation(tree,node.getParent());
+                            node=tree.root;
+                        }
+                    }
+                    else {
+                        temp=node.getParent().getLeftChild();
+                        if(temp.getColor().equals("red")){
+                            temp.setColor("black");
+                            node.getParent().setColor("red");
+                            RightRotation(tree,node.getParent());
+                            temp=node.getParent().getLeftChild();
+                        }
+                        //case2: brother and both children are black
+                        if(temp.getRightChild().getColor().equals("black") && temp.getLeftChild().getColor().equals("black")){
+                            temp.setColor("red");
+                            node=node.getParent();
+                        }
+                        //case3: brother is black, left child is red, right child is black
+                        else if (temp.getLeftChild().getColor().equals("black")){
+                            temp.getRightChild().setColor("black");
+
+                            temp.setColor("red");
+
+                            LeftRotation(tree,temp);
+
+                            temp=node.getParent().getRightChild();
+                        }
+                        //case4: brother is black, right child is red
+                        else if (temp.getLeftChild().getColor().equals("red")){
+                            temp.setColor(node.getParent().getColor());
+                            node.getParent().setColor("black");
+                            temp.getLeftChild().setColor("black");
+                            RightRotation(tree,node.getParent());
+                            node=tree.root;
+                        }
+
+                    }
+                }
+                node.setColor("black");
+            }
+
             public void insertNode(RBTree tree,RBTreeNode newNode){
                 //find the correct place to insert the new node
                 RBTreeNode pointer=getRoot(tree);
@@ -240,6 +356,34 @@
                 tree.getRoot(tree).setColor("black");
             }
 
+
+            //this is used in deleting a node. replace root of the subtree of oldRoot by newRoot
+            public void swap_root(RBTree tree, RBTreeNode oldRoot,  RBTreeNode newRoot){
+                //if the old root is the root of the tree
+                if(oldRoot.getParent()==nil){
+                    tree.root=newRoot;
+                }
+                //if the oldRoot is the left subtree
+                else if(oldRoot==oldRoot.getParent().getLeftChild()){
+                    oldRoot.getParent().setLeftChild(newRoot);
+                }
+                else if(oldRoot==oldRoot.getParent().getRightChild()){
+                    oldRoot.getParent().setRightChild(newRoot);
+                }
+
+                newRoot.setParent(oldRoot.getParent());
+
+            }
+
+            //find the deepest left child of node
+            public RBTreeNode tree_minimum(RBTreeNode node){
+                while (node.getLeftChild()!=nil){
+                    node=node.getLeftChild();
+                }
+                return node;
+            }
+
+
             public void traverse(RBTreeNode node){
                  if(node!=nil){
                      System.out.println(node.getKey());
@@ -269,6 +413,12 @@
                  tree.insertNode(tree,node7);
                  tree.insertNode(tree,node8);
                  tree.insertNode(tree,node9);
+                 //System.out.println(node9.getLeftChild().getKey());
+
+                 tree.traverse(tree.root);
+
+                 tree.deleteNode(tree,node4);
+                 System.out.println("\n\n");
                  tree.traverse(tree.root);
         }
 
