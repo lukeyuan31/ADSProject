@@ -3,6 +3,11 @@
         private int executed_time;
         private int total_time;
 
+        public building(int buildingNum,int total_time){
+            this.buildingNum=buildingNum;
+            this.total_time=total_time;
+        }
+
         public int getBuildingNum() {
             return buildingNum;
         }
@@ -428,15 +433,23 @@
     }
 
     class min_heap {
-            private int[] min_heap;
+            private building[] min_heap;
             private int Max_size;
             private int current_size=0;
             private int leftChild;
             private int rightChild;
-            
-            public min_heap(int max_size){
+
+        public int getCurrent_size() {
+            return current_size;
+        }
+
+        public min_heap(int max_size){
                 this.Max_size=max_size;
-                min_heap=new int[max_size+1];
+                min_heap= new building[max_size + 1];
+            }
+
+            public building getRoot(){
+                return min_heap[0];
             }
 
             private int getParent(int index){
@@ -453,32 +466,104 @@
 
             private void print(){
                 for (int i =0;i<current_size;i++){
-                    System.out.println(min_heap[i]);
+                    System.out.println(min_heap[i].getExecuted_time());
                 }
             }
 
-            public void insert(int element) {
+            public void modifyRoot(int newTime){
+                min_heap[0].setExecuted_time(newTime);
+                heapify(0);
+            }
+
+            public void insert(building newBuilding) {
                 if (current_size >= Max_size) {
                     System.out.println("The size exceeds the max size");
                     return;
                 }
-                min_heap[current_size] = element;
+                min_heap[current_size] = newBuilding;
                 int pos = current_size + 1;
                 current_size++;
 
-                while (pos != 1 && element < min_heap[getParent(pos) - 1]) {
+                while (pos != 1 && newBuilding.getExecuted_time() < min_heap[getParent(pos) - 1].getExecuted_time()) {
                     int indexOfParent = getParent(pos) - 1;
-                    int temp = min_heap[indexOfParent];
+                    building temp = min_heap[indexOfParent];
                     min_heap[indexOfParent] = min_heap[pos - 1];
                     min_heap[pos - 1] = temp;
                 }
                 //current_size++;
             }
+            //check if the node at position pos is a leaf node
+            private boolean isLeaf(int pos){
+                return pos >= current_size / 2 && pos < current_size;
+            }
+
+            private void swap(int a,int b){
+                building temp;
+                temp =min_heap[a];
+                min_heap[a]=min_heap[b];
+                min_heap[b]=temp;
+            }
+
+            //make a heapify operation at position pos after updating the root or deleting the root
+
+            //first heapify the node at pos, then recursively call this function to heapify the leaves
+            public void heapify(int pos){
+                if(!isLeaf(pos)){
+                    int leftchild=getLeftChild(pos+1)-1;
+                    int rightchild=getRightChild(pos+1)-1;
+                    if (min_heap[pos].getExecuted_time() > min_heap[leftchild].getExecuted_time()
+                            || min_heap[pos].getExecuted_time() > min_heap[rightchild].getExecuted_time()
+                    ){
+                        if (min_heap[leftchild].getExecuted_time() < min_heap[rightchild].getExecuted_time()){
+                            swap(pos,leftchild);
+                            heapify(leftchild);
+                        }
+                        else {
+                            swap(pos,rightchild);
+                            heapify(rightchild);
+                        }
+                    }
+                }
+            }
 
 
             public static void main (String args[]){
                 min_heap minHeap = new min_heap(15);
-                minHeap.insert(5);
+                building building1=new building(10,50);
+                building1.setExecuted_time(3);
+                building building2=new building(10,50);
+                building2.setExecuted_time(17);
+                building building3=new building(10,50);
+                building3.setExecuted_time(10);
+                building building4=new building(10,50);
+                building4.setExecuted_time(84);
+                building building5=new building(10,50);
+                building5.setExecuted_time(19);
+                building building6=new building(10,50);
+                building6.setExecuted_time(6);
+                building building7=new building(10,50);
+                building7.setExecuted_time(22);
+                minHeap.insert(building1);
+                //System.out.println(building1.getExecuted_time());
+                minHeap.insert(building2);
+                //System.out.println(building2.getExecuted_time());
+                minHeap.insert(building3);
+                minHeap.insert(building4);
+                minHeap.insert(building5);
+                minHeap.insert(building6);
+                minHeap.insert(building7);
+
+                minHeap.print();
+
+                System.out.println("\n\n");
+
+                minHeap.modifyRoot(15);
+
+
+
+
+
+                /*
                 minHeap.insert(3);
                 minHeap.insert(17);
                 minHeap.insert(10);
@@ -487,8 +572,8 @@
                 minHeap.insert(6);
                 minHeap.insert(22);
                 minHeap.insert(9);
-
-                System.out.println("insert complete");
+                */
+                //System.out.println("insert complete");
                 minHeap.print();
 
         }
