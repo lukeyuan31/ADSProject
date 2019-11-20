@@ -526,7 +526,7 @@
             }
             //check if the node at position pos is a leaf node
             private boolean isLeaf(int pos){
-                return pos >= current_size / 2 && pos < current_size;
+                return ((pos+1 >= (current_size / 2 + 1 )) && (pos+1) <= current_size);
             }
 
             private void swap(int a,int b){
@@ -547,7 +547,16 @@
 
             //first heapify the node at pos, then recursively call this function to heapify the leaves
             public void heapify(int pos){
-                if(!isLeaf(pos)){
+                if(current_size==0){
+                    //do nothing
+                }
+                //System.out.println(min_heap.length);
+                else if(current_size==2){
+                    if(min_heap[0].getExecuted_time()>min_heap[1].getExecuted_time()){
+                        swap(0,1);
+                    }
+                }
+                else if(!isLeaf(pos)){
                     int leftchild=getLeftChild(pos+1)-1;
                     int rightchild=getRightChild(pos+1)-1;
                     if (min_heap[pos].getExecuted_time() > min_heap[leftchild].getExecuted_time()
@@ -590,7 +599,7 @@
                 minHeap.insert(building4);
                 minHeap.insert(building5);
                 minHeap.insert(building6);
-                minHeap.insert(building7);
+                //minHeap.insert(building7);
 
                 minHeap.print();
 
@@ -599,6 +608,21 @@
                 minHeap.removeMin();
 
                 minHeap.print();
+                System.out.println();
+                minHeap.removeMin();
+
+                minHeap.print();
+                System.out.println();
+                minHeap.removeMin();
+
+                minHeap.print();
+
+                System.out.println();
+                minHeap.removeMin();
+
+                minHeap.print();
+
+
 
 
 
