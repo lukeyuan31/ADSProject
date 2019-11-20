@@ -35,15 +35,16 @@ public class test {
         String filename="input.txt";
         File dir = new File(filename);
         String directory=dir.getAbsolutePath();
-        RBTreeNode nil =new RBTreeNode();
-        rbTree.setRoot(rbTree,nil);
+        RBTreeNode nil =rbTree.getRoot(rbTree);
+        //rbTree.setRoot(rbTree,nil);
         String message;
 
 
         FileInputStream fileInputStream=new FileInputStream(directory);
         Scanner scanner=new Scanner(fileInputStream);
 
-        while (globalTime!=0 || minHeap.getCurrent_size()!=0){
+        //while (globalTime==0 || rbTree.getRoot(rbTree)!=nil){
+          while (globalTime<40){
             String [] inputMessage = new String[0];
             if(scanner.hasNextLine()){
                 message=scanner.nextLine();
@@ -54,7 +55,24 @@ public class test {
 
             }
 
-            if(Integer.parseInt(inputMessage[0])==globalTime){
+            while (inputMessage.length>0 && globalTime<Integer.parseInt(inputMessage[0])){
+                System.out.println(globalTime+"building day");
+                globalTime++;
+            }
+
+            if (inputMessage.length>0 && Integer.parseInt(inputMessage[0])==globalTime){
+                System.out.println(globalTime+"command day");
+                globalTime++;
+            }
+
+            while (inputMessage.length==0 && globalTime<40){
+                System.out.println("final days"+globalTime);
+                globalTime++;
+            }
+
+            /*
+            if(inputMessage.length>0 && Integer.parseInt(inputMessage[0])==globalTime){
+                System.out.println(globalTime);
                 System.out.println("entering switch");
                 switch (inputMessage[1]){
                     case "Insert":{
@@ -65,6 +83,8 @@ public class test {
                         //RBTreeNode newNode=new RBTreeNode(buildingNum,nil,nil,nil,"red");
                         RBTreeNode newNode=rbTree.createRBTnode(buildingNum);
                         rbTree.insertNode(rbTree,newNode);
+                        System.out.println("insert complete!");
+                        break;
                     }
                     case "PrintBuilding": {
                         int buildingNum1 = Integer.valueOf(inputMessage[2]);
@@ -77,18 +97,33 @@ public class test {
 
                         }
                         //int startTime=Integer.valueOf(inputMessage[0]);
+                        System.out.println("print complete!");
+                        break;
                     }
                 }
             }
             else {
-                int oldTime=minHeap.getRoot().getExecuted_time();
-                minHeap.modifyRoot(oldTime+5);
-                globalTime++;
-            }
+                while (globalTime<Integer.parseInt(inputMessage[0])) {
+                    System.out.println(globalTime);
+                    int oldTime = minHeap.getRoot().getExecuted_time();
+                    int newTime = oldTime + 5;
+                    if (newTime >= minHeap.getRoot().getExecuted_time()) {
+                        int buildingNum = minHeap.getRoot().getBuildingNum();
+                        RBTreeNode tobeDeleted = rbTree.findNode(rbTree, buildingNum, rbTree.getRoot(rbTree));
+                        rbTree.deleteNode(rbTree, tobeDeleted);
+                        minHeap.removeMin();
+                        //rbTree.deleteNode();
+                    } else {
+                        minHeap.modifyRoot(oldTime + 5);
+                    }
+                    globalTime++;
+                }
+            }*/
 
-
+        //rbTree.traverse(rbTree.getRoot(rbTree));
+           //minHeap.print();
         }
-        rbTree.traverse(rbTree.getRoot(rbTree));
+        //rbTree.traverse(rbTree.getRoot(rbTree));
 
 
         /*

@@ -187,7 +187,7 @@
                     else {
                         swap_root(tree,temp,temp.getRightChild());
                         temp.setRightChild(node.getRightChild());
-                        temp.getRightChild().setParent(pointer);
+                        temp.getRightChild().setParent(temp);
                     }
                     swap_root(tree,node,temp);
                     temp.setLeftChild(node.getLeftChild());
@@ -231,7 +231,7 @@
                             temp=node.getParent().getRightChild();
                         }
                         //case4: brother is black, right child is red
-                        else if (temp.getRightChild().getColor().equals("red")){
+                        if (temp.getRightChild().getColor().equals("red")){
                             temp.setColor(node.getParent().getColor());
                             node.getParent().setColor("black");
                             temp.getRightChild().setColor("black");
@@ -263,7 +263,7 @@
                             temp=node.getParent().getRightChild();
                         }
                         //case4: brother is black, right child is red
-                        else if (temp.getLeftChild().getColor().equals("red")){
+                        if (temp.getLeftChild().getColor().equals("red")){
                             temp.setColor(node.getParent().getColor());
                             node.getParent().setColor("black");
                             temp.getLeftChild().setColor("black");
@@ -372,7 +372,7 @@
                 else if(oldRoot==oldRoot.getParent().getLeftChild()){
                     oldRoot.getParent().setLeftChild(newRoot);
                 }
-                else if(oldRoot==oldRoot.getParent().getRightChild()){
+                else {
                     oldRoot.getParent().setRightChild(newRoot);
                 }
 
@@ -396,6 +396,28 @@
                      traverse(node.getLeftChild());
                      traverse(node.getRightChild());
                 }
+            }
+
+            public RBTreeNode findNode(RBTree tree, int key,RBTreeNode pointer){
+                if(tree.getRoot(tree)==nil){
+                    return null;
+                }
+                if(key==pointer.getKey()){
+                    return pointer;
+                }
+                else if(key<pointer.getKey()){
+                    if(pointer.getLeftChild()!=nil){
+                        return findNode(tree,key,pointer.getLeftChild());
+                    }
+                }
+                else if(key>pointer.getKey()){
+                    if(pointer.getRightChild()!=nil){
+                        return findNode(tree,key,pointer.getRightChild());
+                    }
+                }
+
+                return null;
+
             }
 
             public static void main(String args[]){
@@ -422,7 +444,17 @@
 
                  tree.traverse(tree.root);
 
+                 //System.out.println(tree.findNode(tree,6,tree.root).getKey());
+                 System.out.println("\n\n");
+                 //tree.deleteNode(tree,tree.findNode(tree,6,tree.root));
+                 //tree.deleteNode(tree,node3);
+                 //RBTreeNode tobedeleted=tree.findNode(tree,5,tree.root);
+
                  tree.deleteNode(tree,node4);
+                 tree.traverse(tree.root);
+
+
+                 tree.deleteNode(tree,node6);
                  System.out.println("\n\n");
                  tree.traverse(tree.root);
         }
@@ -464,7 +496,7 @@
                 return index*2+1;
             }
 
-            private void print(){
+            public void print(){
                 for (int i =0;i<current_size;i++){
                     System.out.println(min_heap[i].getExecuted_time());
                 }
@@ -502,6 +534,13 @@
                 temp =min_heap[a];
                 min_heap[a]=min_heap[b];
                 min_heap[b]=temp;
+            }
+
+            public void removeMin(){
+                min_heap[0]=min_heap[current_size-1];
+                //min_heap[current_size-1]=null;
+                current_size--;
+                heapify(0);
             }
 
             //make a heapify operation at position pos after updating the root or deleting the root
@@ -557,7 +596,9 @@
 
                 System.out.println("\n\n");
 
-                minHeap.modifyRoot(15);
+                minHeap.removeMin();
+
+                minHeap.print();
 
 
 
@@ -574,7 +615,7 @@
                 minHeap.insert(9);
                 */
                 //System.out.println("insert complete");
-                minHeap.print();
+                //minHeap.print();
 
         }
 
