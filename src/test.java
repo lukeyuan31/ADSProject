@@ -141,7 +141,7 @@ public class test {
             }
 
             while (inputMessage.length==0 && rbTree.getRoot(rbTree)!=nil){
-                //System.out.println("final days"+globalTime);
+                System.out.println("final days"+globalTime);
                 int oldTime=minHeap.getRoot().getExecuted_time();
                 if (oldTime<minHeap.getRoot().getTotal_time() && buildingDay<5){
                     //minHeap.modifyRoot(oldTime+1);
@@ -176,7 +176,7 @@ public class test {
                         minHeap.getRoot().setExecuted_time(newTime + 1);
                     }
                 }
-                //minHeap.print();
+                minHeap.print();
                 //System.out.println();
                 globalTime++;
             }
