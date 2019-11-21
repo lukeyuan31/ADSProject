@@ -101,7 +101,7 @@
 
     class RBTree {
             private RBTreeNode nil=new RBTreeNode();
-            private RBTreeNode root=new RBTreeNode();
+            private RBTreeNode root=nil;
 
             public RBTree(){
                  root=nil;
@@ -500,7 +500,7 @@
 
             public void print(){
                 for (int i =1;i<=current_size;i++){
-                    System.out.println("("+min_heap[i].getExecuted_time()+","+min_heap[i].getTotal_time()+")");
+                    System.out.println("("+min_heap[i].getExecuted_time()+","+min_heap[i].getBuildingNum()+","+min_heap[i].getTotal_time()+")");
                     //System.out.println(min_heap[i].getBuildingNum());
                 }
             }
@@ -584,7 +584,11 @@
                     if(min_heap[1].getExecuted_time()>min_heap[2].getExecuted_time()){
                         swap(1,2);
                     }
-                    //else if (min_heap)
+                    else if (min_heap[1].getExecuted_time()==min_heap[2].getExecuted_time()){
+                        if (min_heap[1].getBuildingNum()>min_heap[2].getBuildingNum()){
+                            swap(1,2);
+                        }
+                    }
                 }
                 else if(!isLeaf(pos)){
                     int leftchild=getLeftChild(pos);
@@ -613,6 +617,36 @@
                             swap(pos,rightchild);
                             heapify(rightchild);
                         }
+                    }
+                    else if (min_heap[pos].getExecuted_time()==min_heap[leftchild].getExecuted_time()
+                            || min_heap[pos].getExecuted_time()==min_heap[rightchild].getExecuted_time()){
+                        if (min_heap[leftchild].getExecuted_time()>min_heap[rightchild].getExecuted_time()){
+                            if (min_heap[rightchild].getBuildingNum() < min_heap[pos].getBuildingNum()){
+                                swap(pos,rightchild);
+                                heapify(rightchild);
+                            }
+                        }
+                        else if (min_heap[leftchild].getExecuted_time() < min_heap[rightchild].getExecuted_time()){
+                            if (min_heap[leftchild].getBuildingNum() < min_heap[pos].getBuildingNum()){
+                                swap(pos,leftchild);
+                                heapify(leftchild);
+                            }
+                        }
+                        else {
+                            if (min_heap[pos].getBuildingNum() > min_heap[leftchild].getBuildingNum()
+                            ||  min_heap[pos].getBuildingNum() > min_heap[rightchild].getBuildingNum()){
+                                if (min_heap[leftchild].getBuildingNum()< min_heap[rightchild].getBuildingNum()){
+                                    swap(pos,leftchild);
+                                    heapify(leftchild);
+                                }
+                                else {
+                                    swap(pos,rightchild);
+                                    heapify(rightchild);
+
+                                }
+                            }
+                        }
+
                     }
                 }
             }

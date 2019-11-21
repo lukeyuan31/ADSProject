@@ -8,8 +8,8 @@ public class test1 {
         int globalTime=0;
         min_heap minHeap=new min_heap(2000);
         RBTree rbTree=new RBTree();
-        //String filename="Sample_input1.txt";
-        String filename="input.txt";
+        String filename="Sample_input1.txt";
+        //String filename="input.txt";
         File dir = new File(filename);
         String directory=dir.getAbsolutePath();
         RBTreeNode nil =rbTree.getRoot(rbTree);
@@ -27,7 +27,7 @@ public class test1 {
         //buildDay is used to store the time that the build has been built
         int buildDay=0;
 
-        while (scanner.hasNextLine() || globalTime<100){
+        while (scanner.hasNextLine() || rbTree.getRoot(rbTree)!=nil){
             if (inputMessage.length==0){
                 //System.out.println(globalTime+"getting input");
                 if (scanner.hasNextLine()) {
@@ -70,11 +70,12 @@ public class test1 {
                     RBTreeNode tobeDelete=rbTree.findNode(rbTree,currentBuild.getBuildingNum(),rbTree.getRoot(rbTree));
                     rbTree.deleteNode(rbTree,tobeDelete);
                     currentBuild=minHeap.removeMin();
+                    oldTime=currentBuild.getExecuted_time();
                     currentBuild.setExecuted_time(oldTime+1);
 
-                    System.out.println(currentBuild.getExecuted_time());
-                    minHeap.print();
-                    System.out.println();
+                    //System.out.println(currentBuild.getExecuted_time());
+                    //minHeap.print();
+                    //System.out.println();
                     //minHeap.print();
                     buildDay=1;
                 }
@@ -86,17 +87,17 @@ public class test1 {
                     currentBuild=minHeap.removeMin();
                     currentBuild.setExecuted_time(currentBuild.getExecuted_time()+1);
                     buildDay=1;
-                    System.out.println(currentBuild.getExecuted_time());
-                    minHeap.print();
-                    System.out.println();
+                    //System.out.println(currentBuild.getExecuted_time()+","+currentBuild.getBuildingNum()+","+currentBuild.getTotal_time());
+                    //minHeap.print();
+                    //System.out.println();
                 }
                 else {
                     //System.out.println(globalTime+"building day");
                     currentBuild.setExecuted_time(oldTime+1);
                     buildDay++;
-                    System.out.println(currentBuild.getExecuted_time());
-                    minHeap.print();
-                    System.out.println();
+                    //System.out.println(currentBuild.getExecuted_time()+","+currentBuild.getBuildingNum()+","+currentBuild.getTotal_time());
+                    //minHeap.print();
+                    //System.out.println();
                 }
             }
             else if(currentBuild==null){
@@ -108,12 +109,15 @@ public class test1 {
                 else if (minHeap.getCurrent_size()>0){
 
                     currentBuild=minHeap.removeMin();
-                    System.out.println(currentBuild.getExecuted_time());
-                    minHeap.print();
-                    System.out.println();
+                    //System.out.println(currentBuild.getExecuted_time()+","+currentBuild.getBuildingNum()+","+currentBuild.getTotal_time());
+                    //minHeap.print();
+                    //System.out.println();
                 }
             }
             globalTime++;
+            //System.out.println(globalTime);
+            //rbTree.traverse(rbTree.getRoot(rbTree));
+            //System.out.println();
         }
     }
 }
