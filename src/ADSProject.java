@@ -500,8 +500,8 @@
 
             public void print(){
                 for (int i =1;i<=current_size;i++){
-                    //System.out.println(min_heap[i].getExecuted_time());
-                    System.out.println(min_heap[i].getBuildingNum());
+                    System.out.println("("+min_heap[i].getExecuted_time()+","+min_heap[i].getTotal_time()+")");
+                    //System.out.println(min_heap[i].getBuildingNum());
                 }
             }
 
@@ -565,7 +565,9 @@
                 min_heap[1]=min_heap[current_size];
                 //min_heap[current_size-1]=null;
                 current_size--;
-                heapify(1);
+                if (current_size>0) {
+                    heapify(1);
+                }
                 return currentBuilding;
             }
 
@@ -573,19 +575,18 @@
 
             //first heapify the node at pos, then recursively call this function to heapify the leaves
             public void heapify(int pos){
-            /*
+
                 if(current_size==0){
                     //do nothing
                 }
                 //System.out.println(min_heap.length);
                 else if(current_size==2){
-                    if(min_heap[0].getExecuted_time()>min_heap[1].getExecuted_time()){
-                        swap(0,1);
+                    if(min_heap[1].getExecuted_time()>min_heap[2].getExecuted_time()){
+                        swap(1,2);
                     }
+                    //else if (min_heap)
                 }
-
-             */
-                if(!isLeaf(pos)){
+                else if(!isLeaf(pos)){
                     int leftchild=getLeftChild(pos);
                     int rightchild=getRightChild(pos);
                     /*
@@ -597,8 +598,8 @@
 
                      */
                     if (min_heap[pos].getExecuted_time() > min_heap[leftchild].getExecuted_time()
-                            || min_heap[pos].getExecuted_time() > min_heap[rightchild].getExecuted_time()
-                    ){
+                            || min_heap[pos].getExecuted_time() > min_heap[rightchild].getExecuted_time())
+                    {
                         /*
                         if(min_heap[rightchild]==null){
                             swap(pos,leftchild);
