@@ -8,8 +8,8 @@ public class test1 {
         int globalTime=0;
         min_heap minHeap=new min_heap(2000);
         RBTree rbTree=new RBTree();
-        //String filename="Sample_input2.txt";
-        String filename="Sample_input1.txt";
+        String filename="Sample_input2.txt";
+        //String filename="Sample_input1.txt";
         //String filename="input.txt";
         File dir = new File(filename);
         String directory=dir.getAbsolutePath();
@@ -28,8 +28,8 @@ public class test1 {
         //buildDay is used to store the time that the build has been built
         int buildDay=0;
 
-        while (scanner.hasNextLine() || rbTree.getRoot(rbTree)!=nil){
-        //while(globalTime<500){
+        //while (scanner.hasNextLine() || rbTree.getRoot(rbTree)!=nil){
+        while(globalTime<500){
             if (inputMessage.length==0){
                 //System.out.println(globalTime+"getting input");
                 if (scanner.hasNextLine()) {
@@ -85,19 +85,19 @@ public class test1 {
                 }
 
                 //if current building has been built for 5 days, re-insert it and select a new building
-                else if(buildDay==5){
+                else if(buildDay==4){
                     //System.out.println("reach 5 days");
-                    //currentBuild.setExecuted_time(currentBuild.getExecuted_time()+1);
+                    currentBuild.setExecuted_time(currentBuild.getExecuted_time()+1);
                     if (currentBuild.getExecuted_time()==currentBuild.getTotal_time()){
-                        System.out.println("("+currentBuild.getBuildingNum()+","+(globalTime-1)+")");
+                        System.out.println("("+currentBuild.getBuildingNum()+","+(globalTime)+")");
                         currentBuild=minHeap.removeMin();
                     }
                     else {
                         minHeap.insert(currentBuild);
                         currentBuild = minHeap.removeMin();
                     }
-                    currentBuild.setExecuted_time(currentBuild.getExecuted_time()+1);
-                    buildDay=1;
+                    //currentBuild.setExecuted_time(currentBuild.getExecuted_time()+1);
+                    buildDay=0;
                     //System.out.println(currentBuild.getExecuted_time()+","+currentBuild.getBuildingNum()+","+currentBuild.getTotal_time());
                     //minHeap.print();
                     //System.out.println();
