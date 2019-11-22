@@ -8,6 +8,7 @@ public class test1 {
         int globalTime=0;
         min_heap minHeap=new min_heap(2000);
         RBTree rbTree=new RBTree();
+        //String filename="Sample_input2.txt";
         String filename="Sample_input1.txt";
         //String filename="input.txt";
         File dir = new File(filename);
@@ -28,6 +29,7 @@ public class test1 {
         int buildDay=0;
 
         while (scanner.hasNextLine() || rbTree.getRoot(rbTree)!=nil){
+        //while(globalTime<500){
             if (inputMessage.length==0){
                 //System.out.println(globalTime+"getting input");
                 if (scanner.hasNextLine()) {
@@ -39,6 +41,7 @@ public class test1 {
                     inputMessage[i]=inputMessage[i].trim();
                 }
             }
+
             if (inputMessage.length>0 && globalTime==Integer.parseInt(inputMessage[0])){
                 //System.out.println(globalTime+"executing command");
                 switch (inputMessage[1]){
@@ -47,8 +50,8 @@ public class test1 {
                         int totalTime = Integer.parseInt(inputMessage[3]);
                         building newBuilding = new building(buildingNum,totalTime);
                         minHeap.insert(newBuilding);
-                        RBTreeNode newNode=rbTree.createRBTnode(buildingNum);
-                        rbTree.insertNode(rbTree,newNode);
+                        //RBTreeNode newNode=rbTree.createRBTnode(buildingNum);
+                        //1rbTree.insertNode(rbTree,newNode);
                         //System.out.println("insert complete!");
                         //minHeap.print();
                         break;
@@ -60,6 +63,7 @@ public class test1 {
                 inputMessage=new String[0];
             }
 
+
             //check if current building is finished or reach 5 days
             if (currentBuild!=null){
                 int oldTime=currentBuild.getExecuted_time();
@@ -67,8 +71,8 @@ public class test1 {
                 if (oldTime==currentBuild.getTotal_time()){
                     //System.out.println("a building is finished");
                     System.out.println("("+currentBuild.getBuildingNum()+","+(globalTime-1)+")");
-                    RBTreeNode tobeDelete=rbTree.findNode(rbTree,currentBuild.getBuildingNum(),rbTree.getRoot(rbTree));
-                    rbTree.deleteNode(rbTree,tobeDelete);
+                    //RBTreeNode tobeDelete=rbTree.findNode(rbTree,currentBuild.getBuildingNum(),rbTree.getRoot(rbTree));
+                    //rbTree.deleteNode(rbTree,tobeDelete);
                     currentBuild=minHeap.removeMin();
                     oldTime=currentBuild.getExecuted_time();
                     currentBuild.setExecuted_time(oldTime+1);
@@ -83,8 +87,15 @@ public class test1 {
                 //if current building has been built for 5 days, re-insert it and select a new building
                 else if(buildDay==5){
                     //System.out.println("reach 5 days");
-                    minHeap.insert(currentBuild);
-                    currentBuild=minHeap.removeMin();
+                    //currentBuild.setExecuted_time(currentBuild.getExecuted_time()+1);
+                    if (currentBuild.getExecuted_time()==currentBuild.getTotal_time()){
+                        System.out.println("("+currentBuild.getBuildingNum()+","+(globalTime-1)+")");
+                        currentBuild=minHeap.removeMin();
+                    }
+                    else {
+                        minHeap.insert(currentBuild);
+                        currentBuild = minHeap.removeMin();
+                    }
                     currentBuild.setExecuted_time(currentBuild.getExecuted_time()+1);
                     buildDay=1;
                     //System.out.println(currentBuild.getExecuted_time()+","+currentBuild.getBuildingNum()+","+currentBuild.getTotal_time());
@@ -104,16 +115,19 @@ public class test1 {
                 if (minHeap.getCurrent_size()==0){
                     //System.out.println("heap is empty");
                     //do nothing
-                    break;
                 }
                 else if (minHeap.getCurrent_size()>0){
 
                     currentBuild=minHeap.removeMin();
+                    //currentBuild.setExecuted_time(currentBuild.getExecuted_time()+1);
+                    //buildDay=1;
                     //System.out.println(currentBuild.getExecuted_time()+","+currentBuild.getBuildingNum()+","+currentBuild.getTotal_time());
                     //minHeap.print();
                     //System.out.println();
                 }
             }
+
+
             globalTime++;
             //System.out.println(globalTime);
             //rbTree.traverse(rbTree.getRoot(rbTree));

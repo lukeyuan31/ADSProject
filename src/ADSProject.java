@@ -278,7 +278,7 @@
 
             public void insertNode(RBTree tree,RBTreeNode newNode){
                 //find the correct place to insert the new node
-                RBTreeNode pointer=getRoot(tree);
+                RBTreeNode pointer=root;
                 RBTreeNode insertPointer=nil;
                 if (pointer==nil){
                     tree.root=newNode;
@@ -550,7 +550,7 @@
 
             //check if the node at position pos is a leaf node
             private boolean isLeaf(int pos){
-                return ((pos >= (current_size / 2)) && (pos) <= current_size);
+                return ((pos > (current_size / 2)) && (pos) <= current_size);
             }
 
             private void swap(int a,int b){
@@ -687,6 +687,13 @@
                 building6.setExecuted_time(10);
                 building building7=new building(22,50);
                 building7.setExecuted_time(10);
+                building building8=new building(5765,50);
+                building8.setExecuted_time(10);
+                building building9=new building(3,50);
+                building9.setExecuted_time(10);
+                building building10=new building(45,50);
+                building10.setExecuted_time(10);
+
 
 
 
@@ -699,12 +706,22 @@
                 minHeap.insert(building5);
                 minHeap.insert(building6);
                 minHeap.insert(building7);
+                minHeap.insert(building8);
+                minHeap.insert(building9);
+                minHeap.insert(building10);
                 //minHeap.removeMin();
                 //minHeap.min_heap[4]=null;
                 //minHeap.swap(0,1);
-                //minHeap.heapify(0);
                 minHeap.print();
+                System.out.println();
+                //minHeap.heapify(0);
+                minHeap.removeMin();
 
+                minHeap.print();
+                System.out.println();
+                minHeap.removeMin();
+
+                minHeap.print();
 
 
 
