@@ -39,6 +39,7 @@
             private RBTreeNode rightChild;
             private RBTreeNode parent;
             private String color;
+            //private int length;
 
             //Construct nil nodes
             public RBTreeNode(){
@@ -102,6 +103,7 @@
     class RBTree {
             private RBTreeNode nil=new RBTreeNode();
             private RBTreeNode root=nil;
+            private int length=0;
 
             public RBTree(){
                  root=nil;
@@ -120,26 +122,92 @@
                 return newNode;
             }
 
-            public void LeftRotation(RBTree tree, RBTreeNode nodex){
-                RBTreeNode nodey=nodex.getRightChild();
-                nodex.setRightChild(nodey.getLeftChild());
-                nodey.getLeftChild().setParent(nodex);
-                nodey.setParent(nodex.getParent());
-                if(nodey.getParent()==nil){
-                    tree.setRoot(tree,nodey);
-                }
-                else if(nodex.getParent().getLeftChild()==nodex){
-                    nodex.getParent().setLeftChild(nodey);
-                    }
-                else {
-                    nodex.getParent().setRightChild(nodey);
-                }
-                //nodex.setParent(nodey);
-                nodey.setLeftChild(nodex);
-                nodex.setParent(nodey);
-                
+            public int getLength() {
+                 return length;
             }
 
+
+
+        /*
+                    public void LeftRotation(RBTree tree, RBTreeNode nodex){
+                        RBTreeNode nodey=nodex.getRightChild();
+                        nodex.setRightChild(nodey.getLeftChild());
+                        nodey.getLeftChild().setParent(nodex);
+                        nodey.setParent(nodex.getParent());
+                        if(nodey.getParent()==nil){
+                            tree.setRoot(tree,nodey);
+                        }
+                        else if(nodex.getParent().getLeftChild()==nodex){
+                            nodex.getParent().setLeftChild(nodey);
+                            }
+                        else {
+                            nodex.getParent().setRightChild(nodey);
+                        }
+                        //nodex.setParent(nodey);
+                        nodey.setLeftChild(nodex);
+                        nodex.setParent(nodey);
+
+                    }
+
+                     */
+            void LeftRotation(RBTree tree, RBTreeNode node){
+                if (node.getParent()!=nil){
+                    if (node==node.getParent().getLeftChild()){
+                        node.getParent().setLeftChild(node.getRightChild());
+                    }
+                    else {
+                        node.getParent().setRightChild(node.getRightChild());
+                    }
+                    node.getRightChild().setParent(node.getParent());
+                    node.setParent(node.getRightChild());
+                    if (node.getRightChild().getLeftChild()!=nil){
+                        node.getRightChild().getLeftChild().setParent(node);
+                    }
+                    node.setRightChild(node.getRightChild().getLeftChild());
+                    node.getParent().setLeftChild(node);
+                }
+                else {
+                    RBTreeNode right = root.getRightChild();
+                    root.setRightChild(right.getLeftChild());
+                    right.getLeftChild().setParent(root);
+                    root.setParent(right);
+                    right.setLeftChild(root);
+                    right.setParent(nil);
+                    root=right;
+                }
+            }
+
+            void RightRotation(RBTree tree, RBTreeNode node){
+                if (node.getParent()!=nil){
+                    if (node==node.getParent().getLeftChild()){
+                        node.getParent().setLeftChild(node.getLeftChild());
+                    }
+                    else {
+                        node.getParent().setRightChild(node.getLeftChild());
+                    }
+
+                    node.getLeftChild().setParent(node.getParent());
+                    node.setParent(node.getLeftChild());
+
+                    if (node.getLeftChild().getRightChild()!=nil){
+                        node.getLeftChild().getRightChild().setParent(node);
+                    }
+
+                    node.setLeftChild(node.getLeftChild().getRightChild());
+                    node.getParent().setRightChild(node);
+                }
+                else {
+                    RBTreeNode left=root.getLeftChild();
+                    root.setLeftChild(root.getLeftChild().getRightChild());
+                    left.getRightChild().setParent(root);
+                    root.setParent(left);
+                    left.setRightChild(root);
+                    left.setParent(nil);
+                    root=left;
+                }
+            }
+
+            /*
             public void RightRotation(RBTree tree, RBTreeNode nodey){
                  RBTreeNode nodex=nodey.getLeftChild();
                  nodey.setLeftChild(nodex.getRightChild());
@@ -160,7 +228,10 @@
                  
             }
 
+             */
+
             public void deleteNode(RBTree tree, RBTreeNode node){
+                length--;
                 RBTreeNode temp=node;
                 String storeColor=node.getColor();
                 RBTreeNode pointer=null;
@@ -190,8 +261,10 @@
                         temp.getRightChild().setParent(temp);
                     }
                     swap_root(tree,node,temp);
+                    //node.getLeftChild().setParent(temp);
                     temp.setLeftChild(node.getLeftChild());
-                    temp.getLeftChild().setParent(pointer);
+
+                    temp.getLeftChild().setParent(temp);
                     temp.setColor(node.getColor());
 
                 }
@@ -219,6 +292,7 @@
                         if(temp.getLeftChild().getColor().equals("black") && temp.getRightChild().getColor().equals("black")){
                             temp.setColor("red");
                             node=node.getParent();
+                            continue;
                         }
                         //case3: brother is black, left child is red, right child is black
                         else if (temp.getRightChild().getColor().equals("black")){
@@ -231,12 +305,12 @@
                             temp=node.getParent().getRightChild();
                         }
                         //case4: brother is black, right child is red
-                        if (temp.getRightChild().getColor().equals("red")){
+                        if (temp.getRightChild().getColor().equals("red")) {
                             temp.setColor(node.getParent().getColor());
                             node.getParent().setColor("black");
                             temp.getRightChild().setColor("black");
-                            LeftRotation(tree,node.getParent());
-                            node=tree.root;
+                            LeftRotation(tree, node.getParent());
+                            node = tree.getRoot(tree);
                         }
                     }
                     else {
@@ -251,6 +325,7 @@
                         if(temp.getRightChild().getColor().equals("black") && temp.getLeftChild().getColor().equals("black")){
                             temp.setColor("red");
                             node=node.getParent();
+                            continue;
                         }
                         //case3: brother is black, left child is red, right child is black
                         else if (temp.getLeftChild().getColor().equals("black")){
@@ -260,16 +335,16 @@
 
                             LeftRotation(tree,temp);
 
-                            temp=node.getParent().getRightChild();
+                            temp=node.getParent().getLeftChild();
                         }
                         //case4: brother is black, right child is red
-                        if (temp.getLeftChild().getColor().equals("red")){
+                        if (temp.getLeftChild().getColor().equals("red"))
                             temp.setColor(node.getParent().getColor());
                             node.getParent().setColor("black");
                             temp.getLeftChild().setColor("black");
                             RightRotation(tree,node.getParent());
-                            node=tree.root;
-                        }
+                            node=tree.getRoot(tree);
+
 
                     }
                 }
@@ -278,10 +353,13 @@
 
             public void insertNode(RBTree tree,RBTreeNode newNode){
                 //find the correct place to insert the new node
+                length++;
                 RBTreeNode pointer=root;
                 RBTreeNode insertPointer=nil;
                 if (pointer==nil){
                     tree.root=newNode;
+                    newNode.setColor("black");
+                    newNode.setParent(nil);
                 }
                 else {
                     while(pointer!=nil){
@@ -321,13 +399,14 @@
                               uncle.setColor("black");
                               newNode.getParent().getParent().setColor("red");
                               newNode=newNode.getParent().getParent();
+                              continue;
                         }
                         //if the new node is the right child of its parent, perform a left rotation on its parent
-                        else if (newNode==newNode.getParent().getRightChild()){
+                        if (newNode==newNode.getParent().getRightChild()){
                             newNode=newNode.getParent();
                             LeftRotation(tree,newNode);
                         }
-                        else {
+
                             //new node is the left child of its parent, set father into black, grandfather into red,
                             //perform a rotation on grandfather
                             //System.out.println(newNode.getKey());
@@ -335,7 +414,7 @@
                             newNode.getParent().setColor("black");
                             grandfather.setColor("red");
                             RightRotation(tree, grandfather);
-                        }
+
                     }
                     //father is the right child of grandfather
                     else {
@@ -345,17 +424,18 @@
                             uncle.setColor("black");
                             newNode.getParent().getParent().setColor("red");
                             newNode=newNode.getParent().getParent();
+                            continue;
                         }
-                        else if(newNode==newNode.getParent().getLeftChild()){
+                        if(newNode==newNode.getParent().getLeftChild()){
                             newNode=newNode.getParent();
                             RightRotation(tree,newNode);
                         }
-                        else {
+
                             RBTreeNode grandfather = newNode.getParent().getParent();
                             newNode.getParent().setColor("black");
                             grandfather.setColor("red");
                             LeftRotation(tree, grandfather);
-                        }
+
                     }
                 }
                 tree.getRoot(tree).setColor("black");
@@ -397,6 +477,18 @@
                      traverse(node.getRightChild());
                 }
             }
+            /*
+            public int count(RBTreeNode node){
+
+                if (node!=nil){
+                    length++;
+                    count(node.getLeftChild());
+                    count(node.getRightChild());
+                }
+                return length;
+            }
+
+             */
 
             public RBTreeNode findNode(RBTree tree, int key,RBTreeNode pointer){
                 if(tree.getRoot(tree)==nil){
@@ -431,6 +523,11 @@
                  RBTreeNode node7=tree.createRBTnode(2);
                  RBTreeNode node8=tree.createRBTnode(5);
                  RBTreeNode node9=tree.createRBTnode(8);
+                RBTreeNode node10=tree.createRBTnode(10);
+                RBTreeNode node11=tree.createRBTnode(11);
+                RBTreeNode node12=tree.createRBTnode(12);
+                RBTreeNode node13=tree.createRBTnode(13);
+
                  tree.insertNode(tree,node1);
                  tree.insertNode(tree,node2);
                  tree.insertNode(tree,node3);
@@ -440,9 +537,15 @@
                  tree.insertNode(tree,node7);
                  tree.insertNode(tree,node8);
                  tree.insertNode(tree,node9);
+                tree.insertNode(tree,node10);
+                tree.insertNode(tree,node11);
+                tree.insertNode(tree,node12);
+                tree.insertNode(tree,node13);
                  //System.out.println(node9.getLeftChild().getKey());
 
                  tree.traverse(tree.root);
+                System.out.println("\n\n");
+                 System.out.println(tree.length);
 
                  //System.out.println(tree.findNode(tree,6,tree.root).getKey());
                  System.out.println("\n\n");
@@ -450,11 +553,12 @@
                  //tree.deleteNode(tree,node3);
                  //RBTreeNode tobedeleted=tree.findNode(tree,5,tree.root);
 
-                 tree.deleteNode(tree,node4);
-                 tree.traverse(tree.root);
-
-
                  tree.deleteNode(tree,node6);
+                 tree.traverse(tree.root);
+                System.out.println(tree.length);
+
+
+                // tree.deleteNode(tree,node6);
                  System.out.println("\n\n");
                  tree.traverse(tree.root);
         }

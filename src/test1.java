@@ -28,8 +28,8 @@ public class test1 {
         //buildDay is used to store the time that the build has been built
         int buildDay=0;
 
-        //while (scanner.hasNextLine() || rbTree.getRoot(rbTree)!=nil){
-        while(globalTime<500){
+        while (scanner.hasNextLine() || rbTree.getLength()>0){
+        //while(globalTime<413){
             if (inputMessage.length==0){
                 //System.out.println(globalTime+"getting input");
                 if (scanner.hasNextLine()) {
@@ -50,8 +50,8 @@ public class test1 {
                         int totalTime = Integer.parseInt(inputMessage[3]);
                         building newBuilding = new building(buildingNum,totalTime);
                         minHeap.insert(newBuilding);
-                        //RBTreeNode newNode=rbTree.createRBTnode(buildingNum);
-                        //1rbTree.insertNode(rbTree,newNode);
+                        RBTreeNode newNode=rbTree.createRBTnode(buildingNum);
+                        rbTree.insertNode(rbTree,newNode);
                         //System.out.println("insert complete!");
                         //minHeap.print();
                         break;
@@ -71,8 +71,8 @@ public class test1 {
                 if (oldTime==currentBuild.getTotal_time()){
                     //System.out.println("a building is finished");
                     System.out.println("("+currentBuild.getBuildingNum()+","+(globalTime-1)+")");
-                    //RBTreeNode tobeDelete=rbTree.findNode(rbTree,currentBuild.getBuildingNum(),rbTree.getRoot(rbTree));
-                    //rbTree.deleteNode(rbTree,tobeDelete);
+                    RBTreeNode tobeDelete=rbTree.findNode(rbTree,currentBuild.getBuildingNum(),rbTree.getRoot(rbTree));
+                    rbTree.deleteNode(rbTree,tobeDelete);
                     currentBuild=minHeap.removeMin();
                     oldTime=currentBuild.getExecuted_time();
                     currentBuild.setExecuted_time(oldTime+1);
@@ -90,6 +90,8 @@ public class test1 {
                     currentBuild.setExecuted_time(currentBuild.getExecuted_time()+1);
                     if (currentBuild.getExecuted_time()==currentBuild.getTotal_time()){
                         System.out.println("("+currentBuild.getBuildingNum()+","+(globalTime)+")");
+                        RBTreeNode tobeDelete=rbTree.findNode(rbTree,currentBuild.getBuildingNum(),rbTree.getRoot(rbTree));
+                        rbTree.deleteNode(rbTree,tobeDelete);
                         currentBuild=minHeap.removeMin();
                     }
                     else {
@@ -129,7 +131,7 @@ public class test1 {
 
 
             globalTime++;
-            //System.out.println(globalTime);
+            System.out.println(rbTree.getLength());
             //rbTree.traverse(rbTree.getRoot(rbTree));
             //System.out.println();
         }
