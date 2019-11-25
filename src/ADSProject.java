@@ -39,6 +39,8 @@
             private RBTreeNode rightChild;
             private RBTreeNode parent;
             private String color;
+            private int executed_time;
+            private int total_time;
             //private int length;
 
             //Construct nil nodes
@@ -51,13 +53,31 @@
 
             }
 
-            public RBTreeNode(int key,RBTreeNode leftChild,RBTreeNode rightChild,RBTreeNode parent,String color){
+            public RBTreeNode(int key,int executed_time, int total_time,RBTreeNode leftChild,RBTreeNode rightChild,RBTreeNode parent,String color){
                 this.leftChild=leftChild;
                 this.rightChild=rightChild;
                 this.parent=parent;
                 this.color=color;
                 this.key=key;
+                this.executed_time=executed_time;
+                this.total_time=total_time;
             }
+
+        public int getTotal_time() {
+            return total_time;
+        }
+
+        public int getExecuted_time() {
+            return executed_time;
+        }
+
+        public void setTotal_time(int total_time) {
+            this.total_time = total_time;
+        }
+
+        public void setExecuted_time(int executed_time) {
+            this.executed_time = executed_time;
+        }
 
         public RBTreeNode getLeftChild() {
             return leftChild;
@@ -104,6 +124,7 @@
             private RBTreeNode nil=new RBTreeNode();
             private RBTreeNode root=nil;
             private int length=0;
+            private String printString;
 
             public RBTree(){
                  root=nil;
@@ -117,8 +138,8 @@
                 tree.root=node;
             }
 
-            public RBTreeNode createRBTnode(int key){
-                RBTreeNode newNode=new RBTreeNode(key,nil,nil,nil,"red");
+            public RBTreeNode createRBTnode(int key, int executed_time, int total_time){
+                RBTreeNode newNode=new RBTreeNode(key,executed_time,total_time,nil,nil,nil,"red");
                 return newNode;
             }
 
@@ -126,30 +147,36 @@
                  return length;
             }
 
+        public String getPrintString() {
+            return printString;
+        }
 
+        public void setPrintString(String printString) {
+            this.printString = printString;
+        }
 
         /*
-                    public void LeftRotation(RBTree tree, RBTreeNode nodex){
-                        RBTreeNode nodey=nodex.getRightChild();
-                        nodex.setRightChild(nodey.getLeftChild());
-                        nodey.getLeftChild().setParent(nodex);
-                        nodey.setParent(nodex.getParent());
-                        if(nodey.getParent()==nil){
-                            tree.setRoot(tree,nodey);
-                        }
-                        else if(nodex.getParent().getLeftChild()==nodex){
-                            nodex.getParent().setLeftChild(nodey);
-                            }
-                        else {
-                            nodex.getParent().setRightChild(nodey);
-                        }
-                        //nodex.setParent(nodey);
-                        nodey.setLeftChild(nodex);
-                        nodex.setParent(nodey);
+                                    public void LeftRotation(RBTree tree, RBTreeNode nodex){
+                                        RBTreeNode nodey=nodex.getRightChild();
+                                        nodex.setRightChild(nodey.getLeftChild());
+                                        nodey.getLeftChild().setParent(nodex);
+                                        nodey.setParent(nodex.getParent());
+                                        if(nodey.getParent()==nil){
+                                            tree.setRoot(tree,nodey);
+                                        }
+                                        else if(nodex.getParent().getLeftChild()==nodex){
+                                            nodex.getParent().setLeftChild(nodey);
+                                            }
+                                        else {
+                                            nodex.getParent().setRightChild(nodey);
+                                        }
+                                        //nodex.setParent(nodey);
+                                        nodey.setLeftChild(nodex);
+                                        nodex.setParent(nodey);
 
-                    }
+                                    }
 
-                     */
+                                     */
             void LeftRotation(RBTree tree, RBTreeNode node){
                 if (node.getParent()!=nil){
                     if (node==node.getParent().getLeftChild()){
@@ -512,21 +539,34 @@
 
             }
 
+            public void printBuilding(RBTreeNode pointer,int num1, int num2){
+                //printString="";
+                if (pointer!=nil){
+                    printBuilding(pointer.getLeftChild(),num1,num2);
+                    if (num1<=pointer.getKey() && pointer.getKey()<=num2){
+                        printString=printString+"("+pointer.getKey()+","+pointer.getExecuted_time()+","+pointer.getTotal_time()+"),";
+                    }
+                    printBuilding(pointer.getRightChild(),num1,num2);
+                }
+                //return result;
+            }
+
             public static void main(String args[]){
                  RBTree tree=new RBTree();
-                 RBTreeNode node1=tree.createRBTnode(1);
-                 RBTreeNode node2=tree.createRBTnode(4);
-                 RBTreeNode node3=tree.createRBTnode(3);
-                 RBTreeNode node4=tree.createRBTnode(6);
-                 RBTreeNode node5=tree.createRBTnode(9);
-                 RBTreeNode node6=tree.createRBTnode(7);
-                 RBTreeNode node7=tree.createRBTnode(2);
-                 RBTreeNode node8=tree.createRBTnode(5);
-                 RBTreeNode node9=tree.createRBTnode(8);
-                RBTreeNode node10=tree.createRBTnode(10);
-                RBTreeNode node11=tree.createRBTnode(11);
-                RBTreeNode node12=tree.createRBTnode(12);
-                RBTreeNode node13=tree.createRBTnode(13);
+                 RBTreeNode node1=tree.createRBTnode(1,0,40);
+
+                 RBTreeNode node2=tree.createRBTnode(4,0,23);
+                 RBTreeNode node3=tree.createRBTnode(3,0,43);
+                 RBTreeNode node4=tree.createRBTnode(6,0,2);
+                 RBTreeNode node5=tree.createRBTnode(9,0,4);
+                 RBTreeNode node6=tree.createRBTnode(7,0,23);
+                 RBTreeNode node7=tree.createRBTnode(2,0,1);
+                 RBTreeNode node8=tree.createRBTnode(5,0,12);
+                 RBTreeNode node9=tree.createRBTnode(8,0,12);
+                RBTreeNode node10=tree.createRBTnode(10,0,12);
+                RBTreeNode node11=tree.createRBTnode(11,0,12);
+                RBTreeNode node12=tree.createRBTnode(12,0,12);
+                RBTreeNode node13=tree.createRBTnode(13,0,12);
 
                  tree.insertNode(tree,node1);
                  tree.insertNode(tree,node2);

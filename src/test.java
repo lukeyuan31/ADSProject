@@ -117,7 +117,7 @@ public class test {
                         int totalTime = Integer.parseInt(inputMessage[3]);
                         building newBuilding = new building(buildingNum,totalTime);
                         minHeap.insert(newBuilding);
-                        RBTreeNode newNode=rbTree.createRBTnode(buildingNum);
+                        RBTreeNode newNode=rbTree.createRBTnode(buildingNum,0,totalTime);
                         rbTree.insertNode(rbTree,newNode);
                         //System.out.println("insert complete!");
                         break;
