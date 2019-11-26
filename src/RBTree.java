@@ -4,6 +4,7 @@ class RBTree {
             private int length=0;
             private String printString;
 
+
             public RBTree(){
                  root=nil;
             }
@@ -25,36 +26,16 @@ class RBTree {
                  return length;
             }
 
-        public String getPrintString() {
+            public String getPrintString() {
             return printString;
-        }
+            }
 
-        public void setPrintString(String printString) {
+            public void setPrintString(String printString) {
             this.printString = printString;
-        }
+            }
 
-        /*
-                                    public void LeftRotation(RBTree tree, RBTreeNode nodex){
-                                        RBTreeNode nodey=nodex.getRightChild();
-                                        nodex.setRightChild(nodey.getLeftChild());
-                                        nodey.getLeftChild().setParent(nodex);
-                                        nodey.setParent(nodex.getParent());
-                                        if(nodey.getParent()==nil){
-                                            tree.setRoot(tree,nodey);
-                                        }
-                                        else if(nodex.getParent().getLeftChild()==nodex){
-                                            nodex.getParent().setLeftChild(nodey);
-                                            }
-                                        else {
-                                            nodex.getParent().setRightChild(nodey);
-                                        }
-                                        //nodex.setParent(nodey);
-                                        nodey.setLeftChild(nodex);
-                                        nodex.setParent(nodey);
 
-                                    }
-
-                                     */
+            //perform the left rotate at node in tree.
             void LeftRotation(RBTree tree, RBTreeNode node){
                 if (node.getParent()!=nil){
                     if (node==node.getParent().getLeftChild()){
@@ -82,6 +63,7 @@ class RBTree {
                 }
             }
 
+            //perform the right rotate for node in tree
             void RightRotation(RBTree tree, RBTreeNode node){
                 if (node.getParent()!=nil){
                     if (node==node.getParent().getLeftChild()){
@@ -134,7 +116,7 @@ class RBTree {
             }
 
              */
-
+            //delete the select node
             public void deleteNode(RBTree tree, RBTreeNode node){
                 length--;
                 RBTreeNode temp=node;
@@ -173,11 +155,14 @@ class RBTree {
                     temp.setColor(node.getColor());
 
                 }
+                //if the color of the deleted node is black, delete_adjust should be performed
                 if(storeColor.equals("black")){
                     delete_adjust(tree,pointer);
                 }
             }
 
+
+            //after deleting the node, in some situations the tree should be adjusted to maintain red black tree
             public void delete_adjust(RBTree tree, RBTreeNode node){
                 RBTreeNode temp=null;
                 //while not a root node and is black
@@ -256,6 +241,9 @@ class RBTree {
                 node.setColor("black");
             }
 
+
+
+            //insert the newNode into the tree
             public void insertNode(RBTree tree,RBTreeNode newNode){
                 //find the correct place to insert the new node
                 length++;
@@ -290,6 +278,7 @@ class RBTree {
 
             }
 
+            //after inserting the newNode, the tree should be adjusted
             public void insert_adjust(RBTree tree, RBTreeNode newNode){
                 while (newNode.getParent().getColor().equals("red")) {
                     //father is the left child of grandfather
@@ -394,7 +383,7 @@ class RBTree {
             }
 
              */
-
+            //find and return the certain node for int key. if not found, null is returned
             public RBTreeNode findNode(RBTree tree, int key,RBTreeNode pointer){
                 if(tree.getRoot(tree)==nil){
                     return null;
@@ -417,6 +406,8 @@ class RBTree {
 
             }
 
+
+            //print the triplet from num1 to num2
             public void printBuilding(RBTreeNode pointer,int num1, int num2){
                 //printString="";
                 if (pointer!=nil){
@@ -429,6 +420,9 @@ class RBTree {
                 //return result;
             }
 
+
+
+            //this main method is used to test the correctness when implementing red black tree.
             public static void main(String args[]){
                  RBTree tree=new RBTree();
                  RBTreeNode node1=tree.createRBTnode(1,0,40);

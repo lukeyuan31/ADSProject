@@ -187,23 +187,6 @@ class min_heap {
 
 
         public static void main (String args[]){
-            /*
-            min_heap minHeap = new min_heap(15);
-            building building1=new building(10,50);
-            building1.setExecuted_time(3);
-            building building2=new building(10,50);
-            building2.setExecuted_time(17);
-            building building3=new building(10,50);
-            building3.setExecuted_time(10);
-            building building4=new building(10,50);
-            building4.setExecuted_time(84);
-            building building5=new building(10,50);
-            building5.setExecuted_time(19);
-            building building6=new building(10,50);
-            building6.setExecuted_time(6);
-            building building7=new building(10,50);
-            building7.setExecuted_time(22);
-            */
 
 
             min_heap minHeap = new min_heap(15);

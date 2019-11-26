@@ -7,6 +7,15 @@ class RBTreeNode {
         private int executed_time;
         private int total_time;
         //private int length;
+        private building building;
+
+        public building getBuilding() {
+                return building;
+         }
+
+         public void setBuilding(building building) {
+            this.building = building;
+        }
 
         //Construct nil nodes
         public RBTreeNode(){
